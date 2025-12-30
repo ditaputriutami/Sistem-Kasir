@@ -32,13 +32,9 @@
                     @forelse($barang as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td><span class="badge bg-secondary">{{ $item->kode_barang }}</span></td>
+                        <td>{{ $item->kode_barang }}</td>
                         <td>{{ $item->nama_barang }}</td>
-                        <td>
-                            <span class="badge {{ $item->stok > 10 ? 'bg-success' : ($item->stok > 0 ? 'bg-warning' : 'bg-danger') }}">
-                                {{ $item->stok }}
-                            </span>
-                        </td>
+                        <td>{{ $item->stok }}</td>
                         <td>{{ $item->satuan }}</td>
                         <td>Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</td>
                         <td>

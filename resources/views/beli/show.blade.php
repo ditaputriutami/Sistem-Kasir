@@ -25,7 +25,7 @@
                         <table class="table table-borderless">
                             <tr>
                                 <th width="40%">No. Faktur</th>
-                                <td><span class="badge bg-primary">{{ $beli->no_faktur }}</span></td>
+                                <td>{{ $beli->no_faktur }}</td>
                             </tr>
                             <tr>
                                 <th>Tanggal</th>
@@ -120,8 +120,18 @@
 
 <style>
     @media print {
-        .sidebar, .btn, .card-header, nav { display: none !important; }
-        .card { border: none !important; box-shadow: none !important; }
+
+        .sidebar,
+        .btn,
+        .card-header,
+        nav {
+            display: none !important;
+        }
+
+        .card {
+            border: none !important;
+            box-shadow: none !important;
+        }
     }
 </style>
 @endsection

@@ -31,7 +31,7 @@
                     @forelse($pemasok as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td><span class="badge bg-primary">{{ $item->kode_pemasok }}</span></td>
+                        <td>{{ $item->kode_pemasok }}</td>
                         <td><strong>{{ $item->nama_pemasok }}</strong></td>
                         <td>{{ $item->alamat }}</td>
                         <td><i class="bi bi-telephone"></i> {{ $item->no_telepon }}</td>

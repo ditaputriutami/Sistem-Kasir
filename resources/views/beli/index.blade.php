@@ -31,7 +31,7 @@
                     @forelse($beli as $index => $item)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td><span class="badge bg-primary">{{ $item->no_faktur }}</span></td>
+                        <td>{{ $item->no_faktur }}</td>
                         <td>{{ $item->tanggal->format('d/m/Y') }}</td>
                         <td>
                             <div><strong>{{ $item->pemasok->nama_pemasok }}</strong></div>
