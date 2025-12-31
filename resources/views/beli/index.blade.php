@@ -23,7 +23,7 @@
                         <th>No. Faktur</th>
                         <th>Tanggal</th>
                         <th>Pemasok</th>
-                        <th>Total</th>
+                        <th>Jumlah Item</th>
                         <th width="15%">Aksi</th>
                     </tr>
                 </thead>
@@ -37,7 +37,7 @@
                             <div><strong>{{ $item->pemasok->nama_pemasok }}</strong></div>
                             <small class="text-muted">{{ $item->pemasok->kode_pemasok }}</small>
                         </td>
-                        <td><strong>Rp {{ number_format($item->total, 0, ',', '.') }}</strong></td>
+                        <td><strong>{{ $item->jumlah_pembelian }} item</strong></td>
                         <td>
                             <a href="{{ route('beli.show', $item->id) }}" class="btn btn-sm btn-info">
                                 <i class="bi bi-eye"></i>

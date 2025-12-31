@@ -34,7 +34,7 @@
                         <td>{{ $item->kode_pemasok }}</td>
                         <td><strong>{{ $item->nama_pemasok }}</strong></td>
                         <td>{{ $item->alamat }}</td>
-                        <td><i class="bi bi-telephone"></i> {{ $item->no_telepon }}</td>
+                        <td><i class="bi bi-telephone"></i> {{ $item->tlp }}</td>
                         <td>
                             <a href="{{ route('pemasok.edit', $item->id) }}" class="btn btn-sm btn-warning">
                                 <i class="bi bi-pencil"></i>

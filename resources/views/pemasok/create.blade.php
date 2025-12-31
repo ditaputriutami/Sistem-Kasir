@@ -53,10 +53,10 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="no_telepon" class="form-label">Nomor Telepon <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('no_telepon') is-invalid @enderror"
-                            id="no_telepon" name="no_telepon" value="{{ old('no_telepon') }}" required>
-                        @error('no_telepon')
+                        <label for="tlp" class="form-label">Nomor Telepon <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('tlp') is-invalid @enderror"
+                            id="tlp" name="tlp" value="{{ old('tlp') }}" required>
+                        @error('tlp')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

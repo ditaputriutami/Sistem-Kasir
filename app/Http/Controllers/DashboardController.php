@@ -18,12 +18,18 @@ class DashboardController extends Controller
         $totalBarang = Barang::count();
         $totalPemasok = Pemasok::count();
         $totalTransaksiBulanIni = Beli::whereMonth('tanggal', date('m'))
-                                       ->whereYear('tanggal', date('Y'))
-                                       ->count();
-        $totalNilaiBulanIni = Beli::whereMonth('tanggal', date('m'))
-                                   ->whereYear('tanggal', date('Y'))
-                                   ->sum('total');
-        
+            ->whereYear('tanggal', date('Y'))
+            ->count();
+
+        // Hitung total nilai dari detail pembelian
+        $beliIdsBulanIni = Beli::whereMonth('tanggal', date('m'))
+            ->whereYear('tanggal', date('Y'))
+            ->pluck('id');
+
+        $totalNilaiBulanIni = \App\Models\DetailBeli::whereIn('beli_id', $beliIdsBulanIni)
+            ->selectRaw('SUM(quantity * harga) as total')
+            ->value('total') ?? 0;
+
         return view('dashboard', compact(
             'totalBarang',
             'totalPemasok',

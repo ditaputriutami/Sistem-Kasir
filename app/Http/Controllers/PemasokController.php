@@ -34,15 +34,14 @@ class PemasokController extends Controller
             'kode_pemasok' => 'required|unique:pemasok,kode_pemasok|max:20',
             'nama_pemasok' => 'required',
             'alamat' => 'required',
-            'no_telepon' => 'required|numeric'
+            'tlp' => 'required'
         ], [
             'kode_pemasok.required' => 'Kode pemasok harus diisi',
             'kode_pemasok.unique' => 'Kode pemasok sudah digunakan',
             'kode_pemasok.max' => 'Kode pemasok maksimal 20 karakter',
             'nama_pemasok.required' => 'Nama pemasok harus diisi',
             'alamat.required' => 'Alamat harus diisi',
-            'no_telepon.required' => 'Nomor telepon harus diisi',
-            'no_telepon.numeric' => 'Nomor telepon harus berupa angka'
+            'tlp.required' => 'Nomor telepon harus diisi'
         ]);
 
         // Konversi kode pemasok ke huruf kapital dan hapus spasi
@@ -80,15 +79,14 @@ class PemasokController extends Controller
             'kode_pemasok' => 'required|unique:pemasok,kode_pemasok,' . $pemasok->id . '|max:20',
             'nama_pemasok' => 'required',
             'alamat' => 'required',
-            'no_telepon' => 'required|numeric'
+            'tlp' => 'required'
         ], [
             'kode_pemasok.required' => 'Kode pemasok harus diisi',
             'kode_pemasok.unique' => 'Kode pemasok sudah digunakan',
             'kode_pemasok.max' => 'Kode pemasok maksimal 20 karakter',
             'nama_pemasok.required' => 'Nama pemasok harus diisi',
             'alamat.required' => 'Alamat harus diisi',
-            'no_telepon.required' => 'Nomor telepon harus diisi',
-            'no_telepon.numeric' => 'Nomor telepon harus berupa angka'
+            'tlp.required' => 'Nomor telepon harus diisi'
         ]);
 
         // Konversi kode pemasok ke huruf kapital dan hapus spasi

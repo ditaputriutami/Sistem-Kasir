@@ -20,32 +20,32 @@
                 <i class="bi bi-info-circle"></i> Informasi Transaksi
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <table class="table table-borderless">
-                            <tr>
-                                <th width="40%">No. Faktur</th>
-                                <td>{{ $beli->no_faktur }}</td>
-                            </tr>
-                            <tr>
-                                <th>Tanggal</th>
-                                <td>{{ $beli->tanggal->format('d F Y') }}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <table class="table table-borderless">
-                            <tr>
-                                <th width="40%">Pemasok</th>
-                                <td>{{ $beli->pemasok->nama_pemasok }}</td>
-                            </tr>
-                            <tr>
-                                <th>Total</th>
-                                <td><strong class="text-primary">Rp {{ number_format($beli->total, 0, ',', '.') }}</strong></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+                <table class="table table-borderless">
+                    <tr>
+                        <th width="30%">No. Faktur</th>
+                        <td>{{ $beli->no_faktur }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tanggal</th>
+                        <td>{{ $beli->tanggal->format('d F Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Pemasok</th>
+                        <td><strong>{{ $beli->pemasok->nama_pemasok }}</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Alamat</th>
+                        <td>{{ $beli->pemasok->alamat }}</td>
+                    </tr>
+                    <tr>
+                        <th>Telepon</th>
+                        <td>{{ $beli->pemasok->tlp }}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Item</th>
+                        <td><strong>{{ $beli->jumlah_pembelian }} item</strong></td>
+                    </tr>
+                </table>
             </div>
         </div>
 
@@ -60,26 +60,33 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th>Nama Barang</th>
-                                <th width="15%">Jumlah</th>
-                                <th width="20%">Harga Beli</th>
+                                <th width="15%">Quantity</th>
+                                <th width="20%">Harga</th>
                                 <th width="20%">Subtotal</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php $total = 0; @endphp
                             @foreach($beli->detailBeli as $index => $detail)
+                            @php
+                            $subtotal = $detail->harga * $detail->quantity;
+                            $total += $subtotal;
+                            @endphp
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $detail->barang->nama_barang }}</td>
-                                <td>{{ $detail->jumlah }} {{ $detail->barang->satuan }}</td>
-                                <td>Rp {{ number_format($detail->harga_beli, 0, ',', '.') }}</td>
-                                <td>Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</td>
+                                <td>{{ $detail->quantity }} {{ $detail->barang->satuan }}</td>
+                                <td>Rp {{ number_format($detail->harga, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($subtotal, 0, ',', '.') }}</td>
                             </tr>
                             @endforeach
                         </tbody>
                         <tfoot class="table-light">
                             <tr>
-                                <th colspan="4" class="text-end">TOTAL:</th>
-                                <th>Rp {{ number_format($beli->total, 0, ',', '.') }}</th>
+                                <th colspan="2" class="text-end">Total Item:</th>
+                                <th>{{ $beli->jumlah_pembelian }} item</th>
+                                <th class="text-end">TOTAL:</th>
+                                <th>Rp {{ number_format($total, 0, ',', '.') }}</th>
                             </tr>
                         </tfoot>
                     </table>

@@ -43,8 +43,8 @@ class BeliController extends Controller
             'tanggal' => 'required|date',
             'items' => 'required|array|min:1',
             'items.*.barang_id' => 'required|exists:barang,id',
-            'items.*.jumlah' => 'required|numeric|min:1',
-            'items.*.harga_beli' => 'required|numeric|min:0'
+            'items.*.quantity' => 'required|numeric|min:1',
+            'items.*.harga' => 'required|numeric|min:0'
         ], [
             'pemasok_id.required' => 'Pemasok harus dipilih',
             'pemasok_id.exists' => 'Pemasok tidak valid',
@@ -54,12 +54,12 @@ class BeliController extends Controller
             'items.min' => 'Minimal harus ada 1 barang',
             'items.*.barang_id.required' => 'Barang harus dipilih',
             'items.*.barang_id.exists' => 'Barang tidak valid',
-            'items.*.jumlah.required' => 'Jumlah harus diisi',
-            'items.*.jumlah.numeric' => 'Jumlah harus berupa angka',
-            'items.*.jumlah.min' => 'Jumlah minimal 1',
-            'items.*.harga_beli.required' => 'Harga beli harus diisi',
-            'items.*.harga_beli.numeric' => 'Harga beli harus berupa angka',
-            'items.*.harga_beli.min' => 'Harga beli minimal 0'
+            'items.*.quantity.required' => 'Quantity harus diisi',
+            'items.*.quantity.numeric' => 'Quantity harus berupa angka',
+            'items.*.quantity.min' => 'Quantity minimal 1',
+            'items.*.harga.required' => 'Harga harus diisi',
+            'items.*.harga.numeric' => 'Harga harus berupa angka',
+            'items.*.harga.min' => 'Harga minimal 0'
         ]);
 
         // Gunakan database transaction untuk konsistensi data
@@ -69,11 +69,10 @@ class BeliController extends Controller
             // Generate nomor faktur
             $noFaktur = Beli::generateNoFaktur();
 
-            // Hitung total
-            $total = 0;
+            // Hitung total quantity
+            $jumlah_pembelian = 0;
             foreach ($request->items as $item) {
-                $subtotal = $item['jumlah'] * $item['harga_beli'];
-                $total += $subtotal;
+                $jumlah_pembelian += $item['quantity'];
             }
 
             // Simpan header pembelian
@@ -81,25 +80,22 @@ class BeliController extends Controller
                 'no_faktur' => $noFaktur,
                 'tanggal' => $request->tanggal,
                 'pemasok_id' => $request->pemasok_id,
-                'total' => $total
+                'jumlah_pembelian' => $jumlah_pembelian
             ]);
 
             // Simpan detail pembelian dan update stok
             foreach ($request->items as $item) {
-                $subtotal = $item['jumlah'] * $item['harga_beli'];
-
                 // Simpan detail pembelian
                 DetailBeli::create([
                     'beli_id' => $beli->id,
                     'barang_id' => $item['barang_id'],
-                    'jumlah' => $item['jumlah'],
-                    'harga_beli' => $item['harga_beli'],
-                    'subtotal' => $subtotal
+                    'quantity' => $item['quantity'],
+                    'harga' => $item['harga']
                 ]);
 
                 // Update stok barang (OTOMATIS BERTAMBAH)
                 $barang = Barang::find($item['barang_id']);
-                $barang->stok += $item['jumlah'];
+                $barang->stok += $item['quantity'];
                 $barang->save();
             }
 
@@ -156,7 +152,7 @@ class BeliController extends Controller
             // Rollback stok barang
             foreach ($beli->detailBeli as $detail) {
                 $barang = Barang::find($detail->barang_id);
-                $barang->stok -= $detail->jumlah;
+                $barang->stok -= $detail->quantity;
                 $barang->save();
             }
 

@@ -15,6 +15,7 @@
 
 <form action="{{ route('beli.store') }}" method="POST" id="formBeli">
     @csrf
+    <input type="hidden" id="barangData" value='{{ json_encode($barang) }}'>
 
     <div class="row">
         <div class="col-md-8">
@@ -74,8 +75,8 @@
                             <thead class="table-light">
                                 <tr>
                                     <th width="30%">Barang</th>
-                                    <th width="15%">Jumlah</th>
-                                    <th width="20%">Harga Beli</th>
+                                    <th width="15%">Quantity</th>
+                                    <th width="20%">Harga</th>
                                     <th width="20%">Subtotal</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
@@ -122,7 +123,7 @@
 @section('scripts')
 <script>
     // Data barang dari server
-    const barangData = @json($barang);
+    const barangData = JSON.parse(document.getElementById('barangData').value);
     let itemIndex = 0;
 
     // Tambah item baru
@@ -149,12 +150,12 @@
                 </select>
             </td>
             <td>
-                <input type="number" class="form-control form-control-sm jumlah-input" 
-                       name="items[${itemIndex}][jumlah]" min="1" value="1" required>
+                <input type="number" class="form-control form-control-sm quantity-input" 
+                       name="items[${itemIndex}][quantity]" min="1" value="1" required>
             </td>
             <td>
                 <input type="number" class="form-control form-control-sm harga-input" 
-                       name="items[${itemIndex}][harga_beli]" min="0" value="0" required>
+                       name="items[${itemIndex}][harga]" min="0" value="0" required>
             </td>
             <td>
                 <input type="text" class="form-control form-control-sm subtotal-display" 
@@ -171,7 +172,7 @@
 
         // Event listeners untuk item baru
         const barangSelect = row.querySelector('.barang-select');
-        const jumlahInput = row.querySelector('.jumlah-input');
+        const quantityInput = row.querySelector('.quantity-input');
         const hargaInput = row.querySelector('.harga-input');
         const btnHapus = row.querySelector('.btn-hapus-item');
 
@@ -183,8 +184,8 @@
             hitungSubtotal(row);
         });
 
-        // Hitung subtotal saat jumlah atau harga berubah
-        jumlahInput.addEventListener('input', function() {
+        // Hitung subtotal saat quantity atau harga berubah
+        quantityInput.addEventListener('input', function() {
             hitungSubtotal(row);
         });
 
@@ -202,9 +203,9 @@
     }
 
     function hitungSubtotal(row) {
-        const jumlah = parseFloat(row.querySelector('.jumlah-input').value) || 0;
+        const quantity = parseFloat(row.querySelector('.quantity-input').value) || 0;
         const harga = parseFloat(row.querySelector('.harga-input').value) || 0;
-        const subtotal = jumlah * harga;
+        const subtotal = quantity * harga;
 
         row.querySelector('.subtotal-display').value = formatRupiah(subtotal);
         hitungTotal();
@@ -213,9 +214,9 @@
     function hitungTotal() {
         let total = 0;
         document.querySelectorAll('#itemsContainer tr').forEach(function(row) {
-            const jumlah = parseFloat(row.querySelector('.jumlah-input').value) || 0;
+            const quantity = parseFloat(row.querySelector('.quantity-input').value) || 0;
             const harga = parseFloat(row.querySelector('.harga-input').value) || 0;
-            total += jumlah * harga;
+            total += quantity * harga;
         });
 
         document.getElementById('totalDisplay').textContent = formatRupiah(total);

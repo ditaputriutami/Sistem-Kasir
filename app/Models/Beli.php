@@ -14,7 +14,7 @@ class Beli extends Model
         'no_faktur',
         'tanggal',
         'pemasok_id',
-        'total'
+        'jumlah_pembelian'
     ];
 
     // Cast tanggal ke format date
@@ -48,12 +48,12 @@ class Beli extends Model
     {
         $tanggal = date('Ymd');
         $prefix = 'BL-' . $tanggal . '-';
-        
+
         // Cari nomor faktur terakhir pada hari ini
         $lastFaktur = self::where('no_faktur', 'like', $prefix . '%')
-                          ->orderBy('no_faktur', 'desc')
-                          ->first();
-        
+            ->orderBy('no_faktur', 'desc')
+            ->first();
+
         if ($lastFaktur) {
             // Ambil 4 digit terakhir dan tambahkan 1
             $lastNumber = intval(substr($lastFaktur->no_faktur, -4));
@@ -61,7 +61,7 @@ class Beli extends Model
         } else {
             $newNumber = 1;
         }
-        
+
         // Format dengan 4 digit (contoh: 0001, 0002, dst)
         return $prefix . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
     }

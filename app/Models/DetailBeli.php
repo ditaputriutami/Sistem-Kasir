@@ -13,9 +13,8 @@ class DetailBeli extends Model
     protected $fillable = [
         'beli_id',
         'barang_id',
-        'jumlah',
-        'harga_beli',
-        'subtotal'
+        'quantity',
+        'harga'
     ];
 
     /**
@@ -34,5 +33,13 @@ class DetailBeli extends Model
     public function barang()
     {
         return $this->belongsTo(Barang::class);
+    }
+
+    /**
+     * Accessor untuk subtotal
+     */
+    public function getSubtotalAttribute()
+    {
+        return $this->harga * $this->quantity;
     }
 }

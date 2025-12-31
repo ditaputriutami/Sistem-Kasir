@@ -14,7 +14,7 @@ class Pemasok extends Model
         'kode_pemasok',
         'nama_pemasok',
         'alamat',
-        'no_telepon'
+        'tlp'
     ];
 
     /**
